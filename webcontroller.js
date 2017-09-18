@@ -23,12 +23,25 @@ function addButton(button, text) {
   btn.appendChild(img)
   btn.addEventListener('touchstart', (e) => {
     e.preventDefault()
-    pico8_buttons[0] += map[button]
+    const coords = e.target.getBoundingClientRect()
+    const pageX = e.changedTouches[0].pageX
+    const pageY = e.changedTouches[0].pageY
+    const x = pageX - (coords.left + coords.width/2)
+    const y = -(pageY - (coords.top + coords.height/2))
+    if (y > -0.5 * x) {
+      pico8_buttons[0] += map["x"]
+    }
+    if (y < -0.5 * x) {
+      pico8_buttons[0] += map["z"]
+    }
     const val = pico8_buttons[0].toString(2)
   })
   btn.addEventListener('touchend', (e) => {
     e.preventDefault()
-    pico8_buttons[0] -= map[button]
+    const val = calculateButtons(pico8_buttons)
+      .filter(x => x < 4)
+      .reduce((acc, curr) => acc + Math.pow(2, curr), 0);
+    pico8_buttons[0] = val
   })
   btn.addEventListener('touchmove', (e) => {
     e.preventDefault()
@@ -46,8 +59,6 @@ function addXY(button, text) {
   btn.addEventListener('touchstart', (e) => {
     e.preventDefault()
     const coords = e.target.getBoundingClientRect()
-    // const pageX = e.pageX
-    // const pageY = e.pageY
     const pageX = e.changedTouches[0].pageX
     const pageY = e.changedTouches[0].pageY
     const x = pageX - (coords.left + coords.width/2)
@@ -78,8 +89,6 @@ function addXY(button, text) {
   btn.addEventListener('touchmove', (e) => {
     e.preventDefault()
     const coords = e.target.getBoundingClientRect()
-    // const pageX = e.pageX
-    // const pageY = e.pageY
     const pageX = e.changedTouches[0].pageX
     const pageY = e.changedTouches[0].pageY
     const x = pageX - (coords.left + coords.width/2)
@@ -87,37 +96,37 @@ function addXY(button, text) {
     const btns = calculateButtons(pico8_buttons)
 
     //if move out of area
-    if (x < 10 + (40 * y/(coords.height/2))) {
+    if (x < 20) {
       if (btns.includes(1))
       pico8_buttons[0] -= map["right"]
     } 
-    if (x > -(10 + (40 * y/(coords.height/2)))) {
+    if (x > -20) {
       if (btns.includes(0))
       pico8_buttons[0] -= map["left"]
     } 
-    if (y < 10 + (40 * x/(coords.width/2)) ){
+    if (y < 20 ){
       if (btns.includes(2))
       pico8_buttons[0] -= map["up"]
     }
-    if (y > -10 + (40 * x/(coords.width/2)) ){
+    if (y > -20 ){
       if (btns.includes(3))
       pico8_buttons[0] -= map["down"]
     }
     
     //if move into area
-    if (x > 10 + (40 * y/(coords.height/2))) {
+    if (x > 20) {
       if (!btns.includes(1))
       pico8_buttons[0] += map["right"]
-    }
-    if (x < -(10 + (40 * y/(coords.height/2)))) {
+    } 
+    if (x < -20) {
       if (!btns.includes(0)) 
       pico8_buttons[0] += map["left"]
     } 
-    if (y > 10 + (40 * x/(coords.width/2))) {
+    if (y > 20) {
       if (!btns.includes(2))
       pico8_buttons[0] += map["up"]
-    } 
-    if (y < -10 + (40 * x/(coords.width/2))) {
+    }
+    if (y < -20) {
       if (!btns.includes(3))
       pico8_buttons[0] += map["down"]
     }
@@ -140,9 +149,8 @@ function calculateButtons(picobtns) {
 
   return val
 }
-addButton("x","X")
-// addButton("z","Z")
 addXY("xy", "XY")
+addButton("x","X")
 
 
 
