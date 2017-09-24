@@ -19,7 +19,7 @@ function addButton(button, text) {
   const btn = document.createElement("div")
   btn.classList.add("button")
   const img = document.createElement("img")
-  img.src = "xz.png"
+  img.src = "pico-o-x.png"
   btn.appendChild(img)
   btn.addEventListener('touchstart', (e) => {
     e.preventDefault()
@@ -54,7 +54,7 @@ function addXY(button, text) {
   btn.classList.add("button")
   btn.classList.add("xy")
   const img = document.createElement("img")
-  img.src = "dpad.png"
+  img.src = "pico-dpad.png"
   btn.appendChild(img)
   btn.addEventListener('touchstart', (e) => {
     e.preventDefault()
