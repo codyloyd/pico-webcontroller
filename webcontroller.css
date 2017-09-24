@@ -11,6 +11,19 @@
     height: calc(100vh - 100vw);
     background: black;
   }
+  .pause_container {
+    position: absolute;
+    width: 100%;
+    bottom: 20px;
+    height: 20px;
+    text-align: center;
+  }
+  .pause {
+    display: inline-block;
+    width: 50px;
+    height: 10px;
+    opacity: .5;
+  } 
   .xy {
     flex: 5;
     border-left: 1px solid black;
